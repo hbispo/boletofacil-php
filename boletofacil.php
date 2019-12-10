@@ -12,7 +12,8 @@
 
 namespace BoletoFacil;
 
-class BoletoFacil {
+class BoletoFacil
+{
 
     public $transferAmount;
 
@@ -43,20 +44,22 @@ class BoletoFacil {
 
     public $notifyPayer;
     public $notificationUrl;
-    
+
     private $token;
     private $sandbox;
 
-    const PROD_URL = "https://www.boletobancario.com/boletofacil/integration/api/v1/";
-    const SANDBOX_URL = "https://sandbox.boletobancario.com/boletofacil/integration/api/v1/";
+    const PROD_URL = "https://api.juno.com.br/";
+    const SANDBOX_URL = "https://sandbox.boletobancario.com/api-integration/";
     const RESPONSE_TYPE = "JSON";
 
-    function __construct($token, $sandbox = false) {
+    public function __construct($token, $sandbox = false)
+    {
         $this->token = $token;
         $this->sandbox = $sandbox;
     }
 
-    public function createCharge($payerName, $payerCpfCnpj, $description, $amount, $dueDate) {
+    public function createCharge($payerName, $payerCpfCnpj, $description, $amount, $dueDate)
+    {
         $this->payerName = $payerName;
         $this->payerCpfCnpj = $payerCpfCnpj;
         $this->description = $description;
@@ -65,85 +68,87 @@ class BoletoFacil {
         return $this;
     }
 
-    public function issueCharge() {
+    public function issueCharge()
+    {
         $requestData = array(
-            'token'                     =>  $this->token,
-            'description'               =>  $this->description,
-            'reference'                 =>  $this->reference,
-            'amount'                    =>  $this->amount,
-            'dueDate'                   =>  $this->dueDate,
-            'installments'              =>  $this->installments,
-            'maxOverdueDays'            =>  $this->maxOverdueDays,
-            'fine'                      =>  $this->fine,
-            'interest'                  =>  $this->interest,
-            'discountAmount'            =>  $this->discountAmount,
-            'discountDays'              =>  $this->discountDays,
-            'payerName'                 =>  $this->payerName,
-            'payerCpfCnpj'              =>  $this->payerCpfCnpj,
-            'payerEmail'                =>  $this->payerEmail,
-            'payerSecondaryEmail'       =>  $this->payerSecondaryEmail,
-            'payerPhone'                =>  $this->payerPhone,
-            'payerBirthDate'            =>  $this->payerBirthDate,
-            'billingAddressStreet'      =>  $this->billingAddressStreet,
-            'billingAddressNumber'      =>  $this->billingAddressNumber,
-            'billingAddressComplement'  =>  $this->billingAddressComplement,
-            'billingAddressCity'        =>  $this->billingAddressCity,
-            'billingAddressState'       =>  $this->billingAddressState,
-            'billingAddressPostcode'    =>  $this->billingAddressPostcode,
-            'notifyPayer'               =>  $this->notifyPayer,
-            'notificationUrl'           =>  $this->notificationUrl,
-            'responseType'              =>  BoletoFacil::RESPONSE_TYPE
+            'token' => $this->token,
+            'description' => $this->description,
+            'reference' => $this->reference,
+            'amount' => $this->amount,
+            'dueDate' => $this->dueDate,
+            'installments' => $this->installments,
+            'maxOverdueDays' => $this->maxOverdueDays,
+            'fine' => $this->fine,
+            'interest' => $this->interest,
+            'discountAmount' => $this->discountAmount,
+            'discountDays' => $this->discountDays,
+            'payerName' => $this->payerName,
+            'payerCpfCnpj' => $this->payerCpfCnpj,
+            'payerEmail' => $this->payerEmail,
+            'payerSecondaryEmail' => $this->payerSecondaryEmail,
+            'payerPhone' => $this->payerPhone,
+            'payerBirthDate' => $this->payerBirthDate,
+            'billingAddressStreet' => $this->billingAddressStreet,
+            'billingAddressNumber' => $this->billingAddressNumber,
+            'billingAddressComplement' => $this->billingAddressComplement,
+            'billingAddressCity' => $this->billingAddressCity,
+            'billingAddressState' => $this->billingAddressState,
+            'billingAddressPostcode' => $this->billingAddressPostcode,
+            'notifyPayer' => $this->notifyPayer,
+            'notificationUrl' => $this->notificationUrl,
+            'responseType' => BoletoFacil::RESPONSE_TYPE,
         );
 
-        return $this->request("issue-charge", $requestData);
+        return $this->request("charges", $requestData);
     }
 
-    public function fetchPaymentDetails($paymentToken) {
+    public function fetchPaymentDetails($paymentToken)
+    {
         $requestData = array(
-            'paymentToken'   => $paymentToken,
-            'responseType'   => BoletoFacil::RESPONSE_TYPE
+            'paymentToken' => $paymentToken,
+            'responseType' => BoletoFacil::RESPONSE_TYPE,
         );
 
         return $this->request("fetch-payment-details", $requestData);
     }
 
-
-    public function fetchBalance() {
+    public function fetchBalance()
+    {
         $requestData = array(
-            'token'         => $this->token,
-            'responseType'  => BoletoFacil::RESPONSE_TYPE
+            'token' => $this->token,
+            'responseType' => BoletoFacil::RESPONSE_TYPE,
         );
 
         return $this->request("fetch-balance", $requestData);
     }
 
-
-    public function requestTransfer() {
+    public function requestTransfer()
+    {
         $requestData = array(
-            'token'         => $this->token,
-            'responseType'  => BoletoFacil::RESPONSE_TYPE,
-            'amount'        => $this->transferAmount
+            'token' => $this->token,
+            'responseType' => BoletoFacil::RESPONSE_TYPE,
+            'amount' => $this->transferAmount,
         );
 
         return $this->request("request-transfer", $requestData);
     }
 
-
-    public function cancelCharge($code) {
+    public function cancelCharge($code)
+    {
         $requestData = array(
-            'token'         => $this->token,
-            'code'          => $code,
-            'responseType'  => BoletoFacil::RESPONSE_TYPE
+            'token' => $this->token,
+            'code' => $code,
+            'responseType' => BoletoFacil::RESPONSE_TYPE,
         );
 
         return $this->request("cancel-charge", $requestData);
     }
 
-
-    private function request($urlSufix, $data) {
+    private function request($urlSufix, $data)
+    {
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => ($this->sandbox ? BoletoFacil::SANDBOX_URL : BoletoFacil::PROD_URL).$urlSufix,
+            CURLOPT_URL => ($this->sandbox ? BoletoFacil::SANDBOX_URL : BoletoFacil::PROD_URL) . $urlSufix,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "UTF-8",
             CURLOPT_MAXREDIRS => 2,
@@ -151,7 +156,7 @@ class BoletoFacil {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => http_build_query($data) . "\n",
-            CURLOPT_HTTPHEADER => $data
+            CURLOPT_HTTPHEADER => $data,
         ));
         $response = curl_exec($curl);
         curl_close($curl);
