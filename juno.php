@@ -76,15 +76,13 @@ class Juno
 
     public function createCharge($payerName, $payerCpfCnpj, $payerEmail, $payerPhone, $payerBirthDate, $description, $amount, $dueDate, $fine, $interest, $discountAmount, $discountDays)
     {
-        $requestData = array(
+        $requestData = [
             'charge' => [
                 'description' => $description,
                 'amount' => $amount,
                 'dueDate' => $dueDate,
                 'fine' => $fine,
                 'interest' => $interest,
-                'discountAmount' => $discountAmount,
-                'discountDays' => $discountDays,
             ],
             'billing' => [
                 'name' => $payerName,
@@ -93,7 +91,12 @@ class Juno
                 'phone' => $payerPhone,
                 'birthDate' => $payerBirthDate,
             ],
-        );
+        ];
+
+        if ($discountAmount > 0) {
+            $requestData['charge']['discountAmount'] = $discountAmount;
+            $requestData['charge']['discountDays'] = $discountDays;
+        }
 
         return $this->request("charges", $requestData);
     }
