@@ -74,13 +74,14 @@ class Juno
         return $this->request("notifications/webhooks/$id");
     }
 
-    public function createCharge($payerName, $payerCpfCnpj, $payerEmail, $payerPhone, $payerBirthDate, $description, $amount, $dueDate, $fine, $interest, $discountAmount, $discountDays)
+    public function createCharge($payerName, $payerCpfCnpj, $payerEmail, $payerPhone, $payerBirthDate, $description, $amount, $dueDate, $maxOverdueDays, $fine, $interest, $discountAmount, $discountDays)
     {
         $requestData = [
             'charge' => [
                 'description' => $description,
                 'amount' => $amount,
                 'dueDate' => $dueDate,
+                'maxOverdueDays' => $maxOverdueDays,
                 'fine' => $fine,
                 'interest' => $interest,
             ],
